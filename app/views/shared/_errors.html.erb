@@ -1,0 +1,19 @@
+<% if obj.present? && obj.errors.any? %>
+  <div class="ui negative message">
+    <i class="close icon"></i>
+    <div class="header">
+      <%= pluralize(obj.errors.count, "error") %> prohibited this <%= obj.class.name.downcase %> from being saved:
+    </div>
+    <ul class="list">
+      <% obj.errors.each do |error| %>
+        <% if error.attribute == :email && error.type == :not_found %>
+          <li>Email not found</li>
+        <% elsif error.attribute == :password && error.type == :not_found %>
+          <li>Password not found</li>
+        <% else %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

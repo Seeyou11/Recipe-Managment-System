@@ -1,0 +1,13 @@
+
+<h2 class="ui center aligned large header">Explore the recipes you've created and enjoy a delightful and flavorful culinary experience.</h2>
+<h4 class="ui center aligned icon header">
+  <i class="circular orange food icon"></i>
+</h4>
+
+ <% if @user.recipes.present?%>
+   <%= render 'recipes/recipes' %>
+ <% else %>
+  <h4 class="ui center aligned icon header">
+  There is no recipe created by you!
+</h4>
+ <% end %>

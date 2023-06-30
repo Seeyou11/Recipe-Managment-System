@@ -1,0 +1,18 @@
+<div class="ui container mt-4">
+  <div class="ui segment">
+    <div class="ui center aligned header"><%= @category.name %></div>
+     <div class="center aligned description">
+       <p><%= @category.description %> </p>
+     </div>
+      <% if logged_in? && current_user.admin? %>
+       <div class="ui center aligned segment mt-4 edit-button">
+          <%= link_to "Edit category", edit_category_path(@category), class: "ui button orange" %>
+       </div>
+       <% end %>
+      <h3 class="mt-4 ui center aligned header">List of recipes available in this category</h3>
+      <div class="recipes">
+        <%= render 'recipes/recipes', q: @q  %>
+      </div>
+  </div>
+</div>
+

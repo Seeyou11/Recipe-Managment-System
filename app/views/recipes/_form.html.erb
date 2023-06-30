@@ -1,0 +1,43 @@
+<div class="ui raised very padded text container segment">
+  <%= form_for(@recipe, html: { class: "ui form", role: "form" }) do |form| %>
+    <div class="field">
+      <%= render 'shared/errors', obj: @recipe %>
+      <%= form.label :title, "Title" %>
+      <div class="ui left icon input">
+        <%= form.text_field :title, placeholder: "Recipe title" %>
+        <i class="food icon"></i>
+      </div>
+    </div>
+    <div class="field">
+      <%= form.label :preparation_steps, "Preparation steps" %>
+      <div class="ui left icon input">
+        <%= form.text_field :preparation_steps, placeholder: "Recipe preparation_steps" %>
+        <i class="utensils icon"></i>
+      </div>
+    </div>
+    <div class="field">
+      <%= form.label :category, class: "form-label" %>
+      <select name="recipe[category_id]" class="ui fluid dropdown">
+        <option value="">Select category</option>
+        <% @categories.each do |category| %>
+          <option value="<%= category.id %>"><%= category.name %></option>
+        <% end %>
+      </select>
+    </div>
+     <div class="field">
+         <%= form.label :description, "Description" %>
+        <div class="ui left icon input">
+          <%= form.text_area :description, placeholder: "Description" %>
+          <%# <i class="file alternate icon"></i> %>
+        </div>
+      </div>
+    <div class="field">
+      <%= form.label :file, "File" %>
+      <div class="ui left icon input">
+        <%= form.file_field :file, placeholder: "" %>
+        <i class="file icon"></i>
+      </div>
+    </div>
+    <%= form.submit @recipe.id.present? ? "Update" : "Save", class: "ui orange submit button" %>
+  <% end %>
+</div>

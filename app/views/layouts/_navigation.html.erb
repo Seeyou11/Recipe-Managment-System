@@ -1,73 +1,58 @@
-<div class="ui small inverted menu">
+<div class="ui inverted menu stackable">
   <div class="ui container">
-     <% if current_user %>
-         <li class="item">
-           <%= link_to "#{current_user.username}'s dashboard", user_path(current_user), class: "nav-link" %>
-         </li>
+    <% if current_user %>
+      <a class="item" href="<%= user_path(current_user) %>"><%= "#{current_user.username}'s dashboard" %></a>
     <% else %>
-           
-        <li class="item">
-          <%= link_to root_path, class: "nav-link" do %>
-            <i class="food icon"></i>RMS
-          <% end %>
-        </li>
-     <% end %>
+      <a class="item" href="<%= root_path %>">
+        <i class="food icon"></i>RMS
+      </a>
+    <% end %>
 
-    <div class="item">
-      <div class="left menu">
-          <div class="ui dropdown ">
-            Recipes <i class="dropdown icon"></i>
-            <div class="menu">
-                <% if logged_in? %>
-                  <%= link_to "Create new recipe", new_recipe_path, class: "item" %>
-                <% end %>
-                  <%= link_to "Recipes lists", recipes_path, class: "item" %>
-            </div>
-          </div>
-      </div> 
-    </div>
-
-    <div class="item">
-     <div class="left menu">
-       <div class="ui dropdown">
-              Categories <i class="dropdown icon"></i>
-             <div class="menu">
-              <% if logged_in? && current_user.admin? %>
-                <%= link_to "Create new category", new_category_path, class: "item" %>
-              <% end %>
-                <%= link_to "Categories lists", categories_path, class: "item" %>
-            </div>
-       </div>
-      </div> 
-    </div>
-
-     <div class="right menu">
-       <% if logged_in? %>
-          <div class="ui dropdown item">
-            <%= "(Admin)" if current_user.admin? %>  <%= current_user.username %></a> <i class="dropdown icon"></i>
-            <div class="menu">
-                <%= link_to "View your profile", user_path(current_user), class: "item" %>
-                <%= link_to "Edit your profile", edit_user_path(current_user), class: "item" %>
-                <%= link_to "Change password", edit_user_path(current_user), class: "item" %>
-                <%= link_to "Delete profile", user_path(current_user), method: :delete, class: "item text-red", data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to delete your account?" } %>
-            </div>
-         </div>  
-       <% end %>
+    <div class="ui dropdown item">
+      Recipes <i class="dropdown icon"></i>
+      <div class="menu">
+        <% if logged_in? %>
+          <%= link_to "Create new recipe", new_recipe_path, class: "item" %>
+        <% end %>
+        <%= link_to "Recipes lists", recipes_path, class: "item" %>
       </div>
+    </div>
 
+    <div class="ui dropdown item">
+      Categories <i class="dropdown icon"></i>
+      <div class="menu">
+        <% if logged_in? && current_user.admin? %>
+          <%= link_to "Create new category", new_category_path, class: "item" %>
+        <% end %>
+        <%= link_to "Categories lists", categories_path, class: "item" %>
+      </div>
+    </div>
+
+    <div class="right menu">
       <% if logged_in? %>
-        <div class="item">
-            <%= link_to "Logout", logout_path, method: :delete, class: "ui orange button" %>
+        <div class="ui dropdown item">
+          <%= "(Admin)" if current_user.admin? %> <%= current_user.username %><i class="dropdown icon"></i>
+          <div class="menu">
+            <%= link_to "View your profile", user_path(current_user), class: "item" %>
+            <%= link_to "Edit your profile", edit_user_path(current_user), class: "item" %>
+            <%= link_to "Change password", edit_user_path(current_user), class: "item" %>
+            <%= link_to "Delete profile", user_path(current_user), method: :delete, class: "item text-red", data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to delete your account?" } %>
+          </div>
         </div>
-      <% else %>
-        <div class="item">
-         <%= link_to "Log in", login_path, class: "ui orange button" %>
-        </div>
-        <div class="item">
-          <%= link_to "Sign up", signup_path, class: "ui orange button" %>
-        </div>
-     <% end %>
-   </div>   
- </div>    
-</div> 
-  
+      <% end %>
+    </div>
+
+    <% if logged_in? %>
+      <div class="item">
+        <%= link_to "Logout", logout_path, method: :delete, class: "ui orange button" %>
+      </div>
+    <% else %>
+      <div class="item">
+        <%= link_to "Log in", login_path, class: "ui orange button" %>
+      </div>
+      <div class="item">
+        <%= link_to "Sign up", signup_path, class: "ui orange button" %>
+      </div>
+    <% end %>
+  </div>
+</div>

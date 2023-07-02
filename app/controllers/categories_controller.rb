@@ -16,9 +16,9 @@ class CategoriesController < ApplicationController
     end
 
     def show
-    @category = Category.find(params[:id])
-    @q = @category.recipes.ransack(params[:q])
-    @recipes = @q.result(distinct: true).order(created_at: :desc).paginate(page: params[:page], per_page: 6)
+        @category = Category.find(params[:id])
+        @q = @category.recipes.ransack(params[:q])
+        @recipes = @q.result(distinct: true).order(created_at: :desc).paginate(page: params[:page], per_page: 6)
     end
 
     def edit
@@ -31,9 +31,7 @@ class CategoriesController < ApplicationController
             flash[:success] = "Category was successfully created."
             redirect_to categories_url
         else
-                    #  flash[:error] = "#{@category.errors.full_messages.join(', ')}"
-            flash[:error] = "Unable to create Category!"
-            redirect_to new_category_url
+            render :new, status: :unprocessable_entity
         end
     end
 
@@ -43,8 +41,7 @@ class CategoriesController < ApplicationController
             flash[:success] = "Category was successfully updated."
             redirect_to category_url(@category)
         else
-            flash[:error] = "Unable to update Category!"
-            redirect_to edit_category_url
+          render :edit, status: :unprocessable_entity
         end
     end
 

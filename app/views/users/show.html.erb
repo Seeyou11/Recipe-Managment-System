@@ -1,13 +1,15 @@
 
 <h2 class="ui center aligned large header">Explore the recipes you've created and enjoy a delightful and flavorful culinary experience.</h2>
 <h4 class="ui center aligned icon header">
-  <i class="circular orange food icon"></i>
+  <% if @user.file.attached? %>
+    <%= image_tag(@user.file, class: "ui circular image", style: "width: 100px; height: 100px;") %>
+  <% end %>          
 </h4>
 
- <% if @user.recipes.present?%>
+<% if @user.recipes.present?%>
    <%= render 'recipes/recipes' %>
- <% else %>
+<% else %>
   <h4 class="ui center aligned icon header">
   There is no recipe created by you!
-</h4>
- <% end %>
+ </h4>
+<% end %>

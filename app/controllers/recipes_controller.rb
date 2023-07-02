@@ -33,22 +33,20 @@ class RecipesController < ApplicationController
     @recipe.user = current_user
     @categories = Category.all
       if @recipe.save
-          flash[:success] = "Recipe was successfully created."
+          flash[:success] = "Recipe was successfully created!"
           redirect_to recipes_url
       else
-          flash[:error] = "Unable to create recipe!"
-          redirect_to new_recipe_url
+          render :new, status: :unprocessable_entity
       end
   end
 
   # PATCH/PUT /recipes/1 or /recipes/1.json
   def update
       if @recipe.update(recipe_params)
-          flash[:success] = "Recipe was successfully updated."
+          flash[:success] = "Recipe was successfully updated!"
           redirect_to recipes_url
       else
-          flash[:error] = "Unable to update recipe!"
-          redirect_to edit_recipe_url
+          render :edit, status: :unprocessable_entity
       end
   end
 

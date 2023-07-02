@@ -1,13 +1,64 @@
+<h2 class="ui center aligned large header">Users list</h2>
+<h4 class="ui center aligned icon header">
+  <i class="circular orange users icon"></i> 
+</h4>
 
-<h1>Users</h1>
-
-<div id="users">
-  <% @users.each do |user| %>
-    <%= render user %>
-    <p>
-      <%= link_to "Show this user", user %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New user", new_user_path %>
+<table class="ui orange celled padded table">
+  <thead>
+    <tr>
+    <th class="single line">User Name</th>
+    <th>Email</th>
+    <th>Created Recipes</th>
+    <th>Actions</th>
+  </tr></thead>
+  <tbody>
+   <% @users.each do |user| %>
+    <tr>
+      <td>
+      <div class="ui grid">
+          <div class="column row">
+            <div class="column ">
+              <% if user.file.attached? %>
+                <%= link_to user_path(user) do %>
+                  <%= image_tag(user.file, class: "ui mini rounded image circular") %>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="column left-margin">
+              <h4 class="ui image header">
+                <%= link_to user_path(user) do %>
+                  <div class="content"><%= user.username %>
+                  <div class="sub header">
+                  </div>
+                  </div>
+                <% end %>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td class="single line">
+        <%= user.email %>
+      </td>
+      <td>
+        <%= link_to pluralize(user.recipes.count, "recipes"), user_path(user) %>
+      </td>
+      <td>
+        <div class="ui " data-rating="3" data-max-rating="3">
+            <%= link_to user_path(user), method: :delete, data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to delete this user?" } do %>
+             <i class="trash alternate icon"></i>
+            <% end %>
+        </div>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+    <th colspan="5">
+  <div class="flickr_pagination">
+    <%= will_paginate @users  , container: false %>
+  </div>
+    </th>
+  </tr></tfoot>
+</table>

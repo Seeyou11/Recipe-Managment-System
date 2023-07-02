@@ -9,11 +9,16 @@ class Recipe < ApplicationRecord
     has_one_attached :file, dependent: :destroy
     has_many :favorites
     has_many :favorited_by, through: :favorites, source: :user
+    before_validation :assign_default_category
 
   def self.ransackable_attributes(auth_object = nil)
     ["category_id", "created_at", "description", "id", "preparation_steps", "title", "updated_at", "user_id"]
   end
     def self.ransackable_associations(auth_object = nil)
     ["category"] # Add any other associations you want to allow for searching
+  end
+
+  def assign_default_category
+    self.category ||= Category.default_category
   end
 end

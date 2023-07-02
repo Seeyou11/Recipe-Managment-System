@@ -1,8 +1,10 @@
 <div class="ui inverted menu stackable">
   <div class="ui container">
-    <% if current_user %>
+    <% if (current_user && !current_user&.admin?) %>
       <a class="item" href="<%= user_path(current_user) %>"><%= "#{current_user.username}'s dashboard" %></a>
-    <% else %>
+    <% elsif current_user&.admin? %>
+      <a class="item" href="<%= users_path %>"><%= "Users list" %></a>  
+    <% else%>
       <a class="item" href="<%= root_path %>">
         <i class="food icon"></i>RMS
       </a>
@@ -35,8 +37,10 @@
           <div class="menu">
             <%= link_to "View your profile", user_path(current_user), class: "item" %>
             <%= link_to "Edit your profile", edit_user_path(current_user), class: "item" %>
-            <%= link_to "Change password", edit_user_path(current_user), class: "item" %>
-            <%= link_to "Delete profile", user_path(current_user), method: :delete, class: "item text-red", data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to delete your account?" } %>
+            <%= link_to "Change password", edit_password_path(current_user), class: "item" %>
+            <% if (current_user && !current_user&.admin?) %>
+            <%= link_to "Delete profile", user_path(current_user), method: :delete, class: "item", data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to delete your account?" } %>
+            <% end %>
           </div>
         </div>
       <% end %>

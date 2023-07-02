@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :recipes
   resources :users, except: [:new]
   get 'signup', to: 'users#new'
+  get 'password', to: 'passwords#edit', as: :edit_password
+  patch 'password', to: 'passwords#update'
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   get 'logout', to: 'sessions#destroy'

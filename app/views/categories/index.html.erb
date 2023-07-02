@@ -1,5 +1,7 @@
 <h2 class="ui center aligned large header">List of Recipe Categories</h2>
-
+<h4 class="ui center aligned icon header">
+  <i class="circular orange food icon"></i>
+</h4>
 <div class="ui container">
   <div class="ui container">
     <%= search_form_for @q, url: categories_path, html: { class: "ui form", role: "form" } do |f| %>
@@ -29,12 +31,12 @@
             </div>
           </div>
           <div class="extra content">
-            <div class="center aligned author">
+            <div class="center aligned ">
               <%= pluralize(category.recipes.count, "recipes") %>
             </div>
           </div>
         </div>
-      <% end %>
+      <% end %>.
     </div>
   </div>
 </div>

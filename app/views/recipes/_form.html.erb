@@ -1,7 +1,7 @@
 <div class="ui raised very padded text container segment">
   <%= form_for(@recipe, html: { class: "ui form", role: "form" }) do |form| %>
+     <%= render 'shared/errors', obj: @recipe %>
     <div class="field">
-      <%= render 'shared/errors', obj: @recipe %>
       <%= form.label :title, "Title" %>
       <div class="ui left icon input">
         <%= form.text_field :title, placeholder: "Recipe title" %>
@@ -19,8 +19,10 @@
       <%= form.label :category, class: "form-label" %>
       <select name="recipe[category_id]" class="ui fluid dropdown">
         <option value="">Select category</option>
-        <% @categories.each do |category| %>
-          <option value="<%= category.id %>"><%= category.name %></option>
+        <% if @categories&.any? %>
+          <% @categories.each do |category| %>
+            <option value="<%= category.id %>"><%= category.name %></option>
+          <% end %>
         <% end %>
       </select>
     </div>

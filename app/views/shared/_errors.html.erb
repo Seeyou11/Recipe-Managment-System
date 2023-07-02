@@ -6,13 +6,7 @@
     </div>
     <ul class="list">
       <% obj.errors.each do |error| %>
-        <% if error.attribute == :email && error.type == :not_found %>
-          <li>Email not found</li>
-        <% elsif error.attribute == :password && error.type == :not_found %>
-          <li>Password not found</li>
-        <% else %>
-          <li><%= error.full_message %></li>
-        <% end %>
+        <li><%= error.full_message %></li>
       <% end %>
     </ul>
   </div>

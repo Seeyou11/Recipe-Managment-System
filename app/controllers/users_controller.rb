@@ -32,8 +32,7 @@ class UsersController < ApplicationController
                 flash[:success] = "Welcome #{@user.username}, you have successfully signup."
                 redirect_to user_url(@user)
             else
-                flash[:error] = "Unable to sign up. Please check your information and try again."
-                redirect_to signup_path
+                render :new, status: :unprocessable_entity
             end
     end 
 
@@ -42,27 +41,33 @@ class UsersController < ApplicationController
                  flash[:success] = "Dear #{@user.username}, you have successfully updated your account."
                 redirect_to user_url
             else
-                flash[:error] = "Unable to update your account. Please check your information and try again."
-                redirect_to edit_user_url
+                render :edit, status: :unprocessable_entity
             end
     end
 
     def destroy
-      @user.destroy
-      session[:user_id] = nil if @user == current_user
-      respond_to do |format|
-        format.html { redirect_to recipes_url, notice: "Your profile  was successfully destroyed." }
-        format.json { head :no_content }
-      end
+        if current_user.admin?
+            @user.destroy
+            flash[:notice] = "User account deleted successfully."
+            redirect_to users_path
+        else
+            @user.destroy
+            session[:user_id] = nil if @user == current_user
+            respond_to do |format|
+            format.html { redirect_to recipes_url, notice: "Your profile was successfully destroyed." }
+            format.json { head :no_content }
+            end
+        end
     end
 
+
     private
-     def set_user
+    def set_user
       @user = User.find(params[:id])
     end
 
     def user_params
-        params.require(:user).permit(:username, :email, :password, :file)
+        params.require(:user).permit(:username, :email, :password, :password_confirmation, :file)
     end
 
     def require_same_user

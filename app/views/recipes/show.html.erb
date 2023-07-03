@@ -45,10 +45,12 @@
             <% end %>
           <div class="content">
             <div class="image">
-              <% if @recipe.user.file.attached? %>
+              <% if @recipe.user &&  @recipe.user.file.attached? %>
                 <%= image_tag(@recipe.user.file, style: "max-width: 30px;", class: "ui circular image") %>
               <% end %>
-            <%= link_to (@recipe.user.username).capitalize, user_path(@recipe.user) %>
+             <% if @recipe.user%>
+               <%= link_to (@recipe.user.username).capitalize, user_path(@recipe.user) %>
+            <% end %>
             </div> 
           </div>
          </div>
@@ -61,7 +63,9 @@
           <div class="content">
             <div class="header"> <%= @recipe.title %></div>
             <div class="meta">
-              <%= link_to @recipe.category.name, category_path(@recipe.category), class: "ui orange horizontal label", style: "margin-right: 2px;" %>
+             <% if @recipe.category %>
+                  <%= link_to @recipe.category.name, category_path(@recipe.category), class: "ui orange horizontal label", style: "margin-right: 2px;" %>
+             <% end %>  
             </div>
             <div class="description">
               <strong>Preparation steps:</strong> <%= @recipe.preparation_steps %>

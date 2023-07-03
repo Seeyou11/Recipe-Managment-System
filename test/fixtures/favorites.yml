@@ -4,8 +4,21 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+# favorites.yml
+
+one:
+  id: 1
+  value: 1
+  recipe_id: <%= ActiveRecord::FixtureSet.identify(:one, "Recipe") %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:one, "User") %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+two:
+  id: 2
+  value: 2
+  recipe_id: <%= ActiveRecord::FixtureSet.identify(:two, "Recipe") %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:two, "User") %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+

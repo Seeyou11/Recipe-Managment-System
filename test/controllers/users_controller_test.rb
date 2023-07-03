@@ -1,48 +1,73 @@
-require "test_helper"
+require 'test_helper'
 
-class UsersControllerTest < ActionDispatch::IntegrationTest
-  setup do
+class UsersControllerTest < ActionController::TestCase
+  def setup
     @user = users(:one)
   end
 
-  test "should get index" do
-    get users_url
-    assert_response :success
-  end
-
   test "should get new" do
-    get new_user_url
+    get :new
     assert_response :success
   end
 
   test "should create user" do
-    assert_difference("User.count") do
-      post users_url, params: { user: {  } }
+    assert_difference('User.count') do
+      post :create, params: { user: { username: 'testuser', email: 'test@example.com', password: 'password', password_confirmation: 'password' } }
     end
-
-    assert_redirected_to user_url(User.last)
+    assert_redirected_to user_path(User.last)
+    assert_equal "Welcome testuser, you have successfully signed up.", flash[:success]
   end
 
-  test "should show user" do
-    get user_url(@user)
-    assert_response :success
+  test "should not create user with invalid params" do
+    assert_no_difference('User.count') do
+      post :create, params: { user: { username: '', email: 'test@example.com', password: 'password', password_confirmation: 'password' } }
+    end
+    assert_response :unprocessable_entity
   end
 
   test "should get edit" do
-    get edit_user_url(@user)
+    log_in_as(@user)
+    get :edit, params: { id: @user.id }
     assert_response :success
   end
 
   test "should update user" do
-    patch user_url(@user), params: { user: {  } }
-    assert_redirected_to user_url(@user)
+    log_in_as(@user)
+    patch :update, params: { id: @user.id, user: { username: 'newusername' } }
+    assert_redirected_to user_path(@user)
+    assert_equal "Dear newusername, you have successfully updated your account.", flash[:success]
+    @user.reload
+    assert_equal 'newusername', @user.username
+  end
+
+  test "should not update user with invalid params" do
+    log_in_as(@user)
+    patch :update, params: { id: @user.id, user: { username: '' } }
+    assert_response :unprocessable_entity
   end
 
   test "should destroy user" do
-    assert_difference("User.count", -1) do
-      delete user_url(@user)
+    log_in_as(@user)
+    assert_difference('User.count', -1) do
+      delete :destroy, params: { id: @user.id }
     end
+    assert_redirected_to users_path
+    assert_equal "User account deleted successfully.", flash[:notice]
+  end
 
-    assert_redirected_to users_url
+  test "should redirect non-admin user to recipes_url on destroy" do
+    log_in_as(@user)
+    assert_difference('User.count', -1) do
+      delete :destroy, params: { id: @user.id }
+    end
+    assert_redirected_to recipes_url
+    assert_nil session[:user_id]
+    assert_equal "Your profile was successfully destroyed.", flash[:notice]
+  end
+
+  private
+
+  def log_in_as(user)
+    session[:user_id] = user.id
   end
 end

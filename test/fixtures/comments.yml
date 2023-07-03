@@ -4,8 +4,19 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+# comments.yml
+one:
+  id: 1
+  content: This is the first comment.
+  recipe_id: <%= ActiveRecord::FixtureSet.identify(:one, "Recipe") %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:one, "User") %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+two:
+  id: 2
+  content: This is the second comment.
+  recipe_id: <%= ActiveRecord::FixtureSet.identify(:two, "Recipe") %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:two, "User") %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

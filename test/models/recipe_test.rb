@@ -1,16 +1,11 @@
 require 'test_helper'
 
 class RecipeTest < ActiveSupport::TestCase
+  fixtures :users, :categories, :recipes
   def setup
-    @user = User.create(username: 'testuser', email: 'test@example.com', password: 'password', password_confirmation: 'password')
-    @category = Category.create(name: 'Example Category', description: 'Example description', user_id: @user)
-    @recipe = Recipe.new(
-      title: 'Example Recipe',
-      description: 'Example description',
-      preparation_steps: 'Example preparation steps',
-      user: @user,
-      category: @category
-    )
+    @user = users(:one)   
+    @category = categories(:one) 
+    @recipe = recipes(:one) 
   end
 
   test 'should be valid' do

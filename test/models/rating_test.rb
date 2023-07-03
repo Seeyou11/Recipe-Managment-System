@@ -1,38 +1,33 @@
 require 'test_helper'
 
 class RatingTest < ActiveSupport::TestCase
+  fixtures :users, :recipes, :ratings
+
   def setup
-    @user = User.create(username: 'testuser', email: 'test@example.com', password: 'password', password_confirmation: 'password')
-    @category = Category.create(name: 'Example Category', description: 'Example description', user_id: @user)
-    @recipe = Recipe.new(
-      title: 'Example Recipe',
-      description: 'Example description',
-      preparation_steps: 'Example preparation steps',
-      user: @user,
-      category: @category
-    )
+    @user = users(:one)
+    @recipe = recipes(:one)
+    @rating = ratings(:one)
   end
 
   test 'should be valid' do
-    rating = Rating.new(value: 1, recipe: @recipe, user: @user)
-    assert rating.valid?
+    assert @rating.valid?
   end
 
-  test 'should have a value' do
-    rating = Rating.new(recipe: @recipe, user: @user)
-    assert_not rating.valid?
-    assert_includes rating.errors[:value], "can't be blank"
+  test 'should require a value' do
+    @rating.value = nil
+    assert_not @rating.valid?
+    assert @rating.errors[:value].include?("can't be blank")
   end
 
   test 'should belong to a recipe' do
-    rating = Rating.new(value: 4, user: @user)
-    assert_not rating.valid?
-    assert_includes rating.errors[:recipe], "must exist"
+    @rating.recipe = nil
+    assert_not @rating.valid?
+    assert @rating.errors[:recipe].include?("must exist")
   end
 
   test 'should belong to a user' do
-    rating = Rating.new(value: 4, recipe: @recipe)
-    assert_not rating.valid?
-    assert_includes rating.errors[:user], "must exist"
+    @rating.user = nil
+    assert_not @rating.valid?
+    assert @rating.errors[:user].include?("must exist")
   end
 end

@@ -1,48 +1,85 @@
-require "test_helper"
+require 'test_helper'
 
-class CategoriesControllerTest < ActionDispatch::IntegrationTest
-  setup do
+class CategoriesControllerTest < ActionController::TestCase
+  def setup
     @category = categories(:one)
-  end
-
-  test "should get index" do
-    get categories_url
-    assert_response :success
+    @user = users(:one)
   end
 
   test "should get new" do
-    get new_category_url
+    log_in_as(@admin)
+    get :new
     assert_response :success
+  end
+
+  test "should redirect new when not logged in" do
+    get :new
+    assert_redirected_to categories_url
+    assert_not flash.empty?
   end
 
   test "should create category" do
-    assert_difference("Category.count") do
-      post categories_url, params: { category: {  } }
+    log_in_as(@admin)
+    assert_difference('Category.count') do
+      post :create, params: { category: { name: "Test Category", description: "Test Description" } }
     end
-
-    assert_redirected_to category_url(Category.last)
+    assert_redirected_to categories_url
+    assert_not flash.empty?
   end
 
-  test "should show category" do
-    get category_url(@category)
+  test "should redirect create when not logged in" do
+    assert_no_difference('Category.count') do
+      post :create, params: { category: { name: "Test Category", description: "Test Description" } }
+    end
+    assert_redirected_to categories_url
+    assert_not flash.empty?
+  end
+
+  test "should get index" do
+    get :index
     assert_response :success
+    assert_select "h1", "Categories"
+  end
+
+  test "should get show" do
+    get :show, params: { id: @category.id }
+    assert_response :success
+    assert_select "h1", @category.name
   end
 
   test "should get edit" do
-    get edit_category_url(@category)
+    log_in_as(@admin)
+    get :edit, params: { id: @category.id }
     assert_response :success
   end
 
-  test "should update category" do
-    patch category_url(@category), params: { category: {  } }
-    assert_redirected_to category_url(@category)
+  test "should redirect edit when not logged in" do
+    get :edit, params: { id: @category.id }
+    assert_redirected_to categories_url
+    assert_not flash.empty?
   end
 
-  test "should destroy category" do
-    assert_difference("Category.count", -1) do
-      delete category_url(@category)
-    end
+  test "should update category" do
+    log_in_as(@admin)
+    patch :update, params: { id: @category.id, category: { name: "Updated Category", description: "Updated Description" } }
+    assert_redirected_to category_url(@category)
+    @category.reload
+    assert_equal "Updated Category", @category.name
+    assert_equal "Updated Description", @category.description
+  end
 
+  test "should redirect update when not logged in" do
+    patch :update, params: { id: @category.id, category: { name: "Updated Category", description: "Updated Description" } }
     assert_redirected_to categories_url
+    assert_not flash.empty?
+    @category.reload
+    assert_not_equal "Updated Category", @category.name
+    assert_not_equal "Updated Description", @category.description
+  end
+
+  private
+
+  def log_in_as(user)
+    session[:user_id] = user.id
   end
 end

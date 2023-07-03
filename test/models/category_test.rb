@@ -5,14 +5,9 @@
     fixtures :users, :categories
 
     def setup
-
-    @user = User.new(
-      username: 'testuser',
-      email: 'test@example.com',
-      password: 'password',
-      password_confirmation: 'password'
-    )
-    @category = Category.create(name: 'Example Category', description: 'Example description', user_id: @user)
+    @user = users(:one) 
+    @category = categories(:one) 
+    @category.user = @user
     end
 
     test 'should be valid' do

@@ -1,48 +1,42 @@
-require "test_helper"
+require 'test_helper'
 
-class RatingsControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @rating = ratings(:one)
-  end
-
-  test "should get index" do
-    get ratings_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_rating_url
-    assert_response :success
+class RatingsControllerTest < ActionController::TestCase
+  def setup
+    @user = users(:one)
+    @recipe = recipes(:one)
+    log_in_as(@user)
   end
 
   test "should create rating" do
-    assert_difference("Rating.count") do
-      post ratings_url, params: { rating: {  } }
+    assert_difference('Rating.count') do
+      post :create, params: { rating: { value: 4, recipe_id: @recipe.id } }
     end
-
-    assert_redirected_to rating_url(Rating.last)
+    assert_redirected_to recipes_url
   end
 
-  test "should show rating" do
-    get rating_url(@rating)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_rating_url(@rating)
-    assert_response :success
-  end
-
-  test "should update rating" do
-    patch rating_url(@rating), params: { rating: {  } }
-    assert_redirected_to rating_url(@rating)
+  test "should not create rating when not logged in" do
+    log_out
+    assert_no_difference('Rating.count') do
+      post :create, params: { rating: { value: 4, recipe_id: @recipe.id } }
+    end
+    assert_redirected_to recipes_url
   end
 
   test "should destroy rating" do
-    assert_difference("Rating.count", -1) do
-      delete rating_url(@rating)
+    rating = Rating.create(value: 4, recipe: @recipe, user: @user)
+    assert_difference('Rating.count', -1) do
+      delete :destroy, params: { id: rating.id }
     end
+    assert_redirected_to recipes_url
+  end
 
-    assert_redirected_to ratings_url
+  private
+
+  def log_in_as(user)
+    session[:user_id] = user.id
+  end
+
+  def log_out
+    session.delete(:user_id)
   end
 end

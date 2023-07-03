@@ -4,8 +4,28 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one:
+  id: 1
+  title: "Delicious Pasta"
+  description: "A tasty pasta dish"
+  preparation_steps: "1. Boil water\n2. Cook pasta\n3. Mix with sauce"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:one, "User") %>
+  category_id: <%= ActiveRecord::FixtureSet.identify(:one, "Category") %>
+
+two:
+  id: 2
+  title: "Scrumptious Cake"
+  description: "A mouthwatering cake recipe"
+  preparation_steps: "1. Preheat oven\n2. Mix ingredients\n3. Bake"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:two, "User") %>
+  category_id: <%= ActiveRecord::FixtureSet.identify(:one, "Category") %>
+
+
+
+
+
+

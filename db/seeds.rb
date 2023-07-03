@@ -32,7 +32,32 @@
 
   category2 = Category.create!(
     name: "Category 4",
-    description: "This is category 2",
+    description: "This is category 4",
+    user_id: user2.id
+  )
+    category3 = Category.create!(
+    name: "Category 5",
+    description: "This is category 5",
+    user_id: user2.id
+  )
+    category4 = Category.create!(
+    name: "Category 6",
+    description: "This is category 6",
+    user_id: user2.id
+  )
+    category5 = Category.create!(
+    name: "Category 7",
+    description: "This is category 7",
+    user_id: user2.id
+  )
+    category6 = Category.create!(
+    name: "Category 8",
+    description: "This is category 8",
+    user_id: user2.id
+  )
+    category7 = Category.create!(
+    name: "Category 9",
+    description: "This is category 9",
     user_id: user2.id
   )
 
@@ -52,11 +77,51 @@
     user_id: user2.id,
     category_id: category2.id
   )
+  recipe3 = Recipe.create!(
+    title: "Recipe 3",
+    description: "This is recipe 3",
+    preparation_steps: "Step 1, Step 2, Step 3",
+    user_id: user2.id,
+    category_id: category3.id
+  )
+    recipe4 = Recipe.create!(
+    title: "Recipe 4",
+    description: "This is recipe 4",
+    preparation_steps: "Step 1, Step 2, Step 3",
+    user_id: user2.id,
+    category_id: category4.id
+  )
+    recipe5 = Recipe.create!(
+    title: "Recipe 5",
+    description: "This is recipe 5",
+    preparation_steps: "Step 1, Step 2, Step 3",
+    user_id: user2.id,
+    category_id: category2.id
+  )
+    recipe6 = Recipe.create!(
+    title: "Recipe 6",
+    description: "This is recipe 6",
+    preparation_steps: "Step 1, Step 2, Step 3",
+    user_id: user2.id,
+    category_id: category3.id
+  )
+    recipe7 = Recipe.create!(
+    title: "Recipe 7",
+    description: "This is recipe 7",
+    preparation_steps: "Step 1, Step 2, Step 3",
+    user_id: user2.id,
+    category_id: category4.id
+  )
 
 
   # Attach a file to the recipe's image
   recipe1.file.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'pizza.jpg')), filename: 'pizza.jpg')
   recipe2.file.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'sheri.jpg')), filename: 'sheri.jpg')
+  recipe3.file.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'pizza.jpg')), filename: 'pizza.jpg')
+  recipe4.file.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'sheri.jpg')), filename: 'sheri.jpg')
+  recipe5.file.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'pizza.jpg')), filename: 'pizza.jpg')
+  recipe6.file.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'sheri.jpg')), filename: 'sheri.jpg')
+  recipe7.file.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'pizza.jpg')), filename: 'pizza.jpg')
 
   # Create favorites
   Favorite.create!(recipe_id: recipe1.id, user_id: user1.id, value: 5)
